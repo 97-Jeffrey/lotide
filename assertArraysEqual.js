@@ -14,9 +14,9 @@ function eqArrays(arr1, arr2) {
 
 function assertArraysEqual(arr1, arr2) {
   if(eqArrays(arr1,arr2)){
-    console.log('The passed-in arrays are absolutely equal to each other')
+    console.log(`✅✅✅ Assertion Passed: ${arr1} === ${arr2}`)
   }else{
-    console.log('The passed-in arrays are not equal to each other')
+    console.log(`🛑🛑🛑 Assertion failed: ${arr1} !== ${arr2}`)
   }
 }
 
