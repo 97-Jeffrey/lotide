@@ -30,6 +30,9 @@ const eqObjects = function (object1, object2) {
   }
 
   for (let key of arr1) {
+    if (!Array.isArray(object1[key]) && typeof (object1[key]) === 'object' && !Array.isArray(object2[key]) && typeof (object2[key]) === 'object') {
+      return eqObjects(object1[key], object2[key]);
+    }
     if (Array.isArray(object1[key]) && Array.isArray(object2[key])) {
       if (eqArrays(object1[key], object2[key])) {
         return true;
@@ -38,7 +41,7 @@ const eqObjects = function (object1, object2) {
     if (object1[key] !== object2[key]) {
       return false;
     }
-   
+
   }
   return true;
 };
@@ -49,21 +52,28 @@ const eqObjects = function (object1, object2) {
 const ab = { a: "1", b: "2" };
 const ba = { b: "2", a: "1" };
 const abc = { a: "1", b: "2", c: "3" };
-
-console.log(eqObjects(ab,ba));
-console.log(eqObjects(ab,abc));
-
-assertEqual(eqObjects(ab,ba),true);
-assertEqual(eqObjects(ab,abc),false);
+console.log(eqObjects(ab, ba)); // =>true
+console.log(eqObjects(ab, abc)); // =>false
+assertEqual(eqObjects(ab, ba), true);  //=> passed
+assertEqual(eqObjects(ab, abc), false); //=> passed
 
 
-//reference type test:
+
+//reference type test: [Array]
 const cd = { c: "1", d: ["2", 3] };
 const dc = { d: ["2", 3], c: "1" };
 const cd2 = { c: "1", d: ["2", 3, 4] };
- console.log(eqObjects(cd,dc));
- console.log(eqObjects(cd,cd2));
+console.log(eqObjects(cd, dc));  //=>true
+console.log(eqObjects(cd, cd2));  //=>false
+assertEqual(eqObjects(cd, dc), true); //=>passed
+assertEqual(eqObjects(cd, cd2), false); //=>passed
 
 
-assertEqual(eqObjects(cd,dc),true);
-assertEqual(eqObjects(cd,cd2),false);
+
+//reference type test: {object}
+console.log(eqObjects({ b: 2, a: { z: 3 }}, { a: { z: 3 }, b: 2 }));//=>true
+console.log(eqObjects({ a: { y: 0, z: 1 }, b: 2 }, { a: { z: 1 }, b: 2 })) // => false
+console.log(eqObjects({ a: { y: 0, z: 1 }, b: 2 }, { a: 1, b: 2 })); //=>false
+assertEqual(eqObjects({ b: 2, a: { z: 3 }}, { a: { z: 3 }, b: 2 }),true); //=>passed
+assertEqual(eqObjects({ a: { y: 0, z: 1 }, b: 2 }, { a: { z: 1 }, b: 2 }),false); //=>passed
+assertEqual(eqObjects({ a: { y: 0, z: 1 }, b: 2 }, { a: 1, b: 2 }),false);//=>passed
