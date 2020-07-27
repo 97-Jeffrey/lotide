@@ -4,4 +4,7 @@ function head(arr) {
   return arr.shift();
 }
 
-module.exports = head;
+module.exports = {
+  head: head,
+  assertEqual: assertEqual
+};
